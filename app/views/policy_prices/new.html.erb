@@ -1,0 +1,7 @@
+<%= form_for :price_policy, url: {action: "create"} do |f| %>
+  <%= f.label :age, 'Age' %>
+  <%= f.text_field :age %>
+  <%= f.label :length_of_trip, 'Length of Trip' %>
+  <%= f.text_field :length_of_trip %>
+  <%= f.submit "Get Travel Policy Price" %>
+<% end %>

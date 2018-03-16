@@ -1,0 +1,2 @@
+module PolicyPricesHelper
+end
