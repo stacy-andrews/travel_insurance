@@ -9,6 +9,11 @@ class PolicyPricesController < ApplicationController
     unless @policy_price_form.valid?
       render :new
     end
+
+    @policy_price = PolicyPriceCalculator.new.calculate_price(
+      age:            @policy_price_form.age.to_i,
+      length_of_trip: @policy_price_form.length_of_trip.to_i
+    )
   end
 
   private
