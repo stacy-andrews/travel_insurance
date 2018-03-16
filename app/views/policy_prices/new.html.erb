@@ -1,4 +1,13 @@
-<%= form_for :price_policy, url: {action: "create"} do |f| %>
+<% if @policy_price_form.errors.any? %>
+  <h2>We were unable to calculate the travel insurance price due to:</h2>
+  <ul>
+    <% @policy_price_form.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_for @policy_price_form, url: {action: "create"} do |f| %>
   <%= f.label :age, 'Age' %>
   <%= f.text_field :age %>
   <%= f.label :length_of_trip, 'Length of Trip' %>
