@@ -7,7 +7,7 @@
   </ul>
 <% end %>
 
-<%= form_for @policy_price_form, url: {action: "create"} do |f| %>
+<%= form_for @policy_price_form, url: {action: "create"}, html: { novalidate: 'novalidate' } do |f| %>
   <%= f.label :age, 'Age' %>
   <%= f.text_field :age %>
   <%= f.label :length_of_trip, 'Length of Trip' %>
