@@ -18,7 +18,7 @@ class PolicyPriceForm
 
   def to_h
     {
-      age: age.to_i,
+      age:            age.to_i,
       length_of_trip: length_of_trip.to_i
     }
   end

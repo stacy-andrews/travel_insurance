@@ -39,7 +39,7 @@ describe PolicyPriceForm do
   end
 
   it "is not valid when the length of trip is not whole" do
-    form = PolicyPriceForm.new(length_of_trip: 1.5)
+    form = PolicyPriceForm.new(length_of_trip: '1.5')
     expect(form).to_not be_valid
 
     expect(form.errors[:length_of_trip].size).to be(1)

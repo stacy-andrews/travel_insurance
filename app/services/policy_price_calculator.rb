@@ -80,8 +80,11 @@ class PolicyPriceCalculator
        entry[:age].find { |a| a == age  }
     }
 
-    return nil unless applicable_entry
+    raise PriceNotAvailableError unless applicable_entry
 
     applicable_entry[:cost]
   end
 end
+
+class PriceNotAvailableError < StandardError  
+end 

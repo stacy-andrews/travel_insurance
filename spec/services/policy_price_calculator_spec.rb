@@ -9,12 +9,6 @@ require "rails_helper"
 # | 22+ days         | $82   | $90   | $100  |
 
 describe PolicyPriceCalculator do
-  it 'can calculate a price' do
-    expect(
-      PolicyPriceCalculator.new.calculate_price(age: 40, length_of_trip: 8)
-    ).to eq(60)
-  end
-
   def values_for_ranges(age, *values)
     (1..7).each do |trip_length|
       expect(
@@ -49,5 +43,11 @@ describe PolicyPriceCalculator do
     (60..69).each do |age|
       values_for_ranges age, 70, 80, 90, 100
     end
+  end
+
+  it 'raises an error when a cost cannot be calculated' do
+    expect { PolicyPriceCalculator.new.calculate_price(age: 2, length_of_trip: 7) }.to raise_error(PriceNotAvailableError)
+    expect { PolicyPriceCalculator.new.calculate_price(age: 2, length_of_trip: 'a') }.to raise_error(PriceNotAvailableError)
+
   end
 end

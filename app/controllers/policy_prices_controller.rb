@@ -7,12 +7,16 @@ class PolicyPricesController < ApplicationController
     @policy_price_form  = PolicyPriceForm.new(form_params)
 
     unless @policy_price_form.valid?
-      render :new
+      render :new and return
     end
 
+    # the spec says redirect, 
+    # I am assuming posting to the /policy_prices url is what was meant
+    price_request = @policy_price_form.to_h
+
     @policy_price = PolicyPriceCalculator.new.calculate_price(
-      age:            @policy_price_form.age.to_i,
-      length_of_trip: @policy_price_form.length_of_trip.to_i
+      age:            price_request[:age],
+      length_of_trip: price_request[:length_of_trip]
     )
   end
 
