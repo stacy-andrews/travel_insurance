@@ -18,7 +18,8 @@ class PolicyPriceForm
             presence: true,
             numericality: { 
               only_integer: true,
-              greater_than: PolicyPriceCalculator.minimum_trip_length - 1
+              greater_than: PolicyPriceCalculator.minimum_trip_length - 1,
+              less_than:    PolicyPriceCalculator.maximum_trip_length + 1
             }
 
   def to_h

@@ -2,11 +2,12 @@ class PolicyPriceCalculator
   @@minimun_age = 18
   @@maximum_age = 69
   @@minimum_trip_length = 1
-
+  @@maximum_trip_length = 2*365
+  
   @@short_trip = (@@minimum_trip_length..7)
   @@medium_trip = (8..14)
   @@long_trip = (15..21)
-  @@extra_long_trip = (22..2*365) #upper bounds of 2 years
+  @@extra_long_trip = (22..@@maximum_trip_length) #upper bounds of approx 2 years
 
   @@adult = (@@minimun_age..49)
   @@older_adult = (50..59)
@@ -91,6 +92,10 @@ class PolicyPriceCalculator
 
   def self.minimum_trip_length
     @@minimum_trip_length
+  end
+
+  def self.maximum_trip_length
+    @@maximum_trip_length
   end
 
   def self.minimum_age
