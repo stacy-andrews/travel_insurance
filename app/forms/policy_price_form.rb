@@ -8,13 +8,18 @@ class PolicyPriceForm
 
   validates :age,
             presence: true,
-            numericality: { only_integer: true, 
-                            greater_than: 17,
-                            less_than: 70 }
+            numericality: { 
+              only_integer: true, 
+              greater_than: PolicyPriceCalculator.minimum_age - 1,
+              less_than:    PolicyPriceCalculator.maximum_age + 1
+            }
 
   validates :length_of_trip,
             presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
+            numericality: { 
+              only_integer: true,
+              greater_than: PolicyPriceCalculator.minimum_trip_length - 1
+            }
 
   def to_h
     {

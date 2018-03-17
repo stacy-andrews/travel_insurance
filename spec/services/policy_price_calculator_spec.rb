@@ -46,8 +46,13 @@ describe PolicyPriceCalculator do
   end
 
   it 'raises an error when a cost cannot be calculated' do
-    expect { PolicyPriceCalculator.new.calculate_price(age: 2, length_of_trip: 7) }.to raise_error(PriceNotAvailableError)
-    expect { PolicyPriceCalculator.new.calculate_price(age: 2, length_of_trip: 'a') }.to raise_error(PriceNotAvailableError)
+    expect { 
+      PolicyPriceCalculator.new.calculate_price(age: 2, length_of_trip: 7) 
+    }.to raise_error(PriceNotAvailableError)
+    
+    expect { 
+      PolicyPriceCalculator.new.calculate_price(age: 2, length_of_trip: 'a')
+    }.to raise_error(PriceNotAvailableError)
 
   end
 end
