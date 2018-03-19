@@ -48,7 +48,7 @@ RSpec.feature "Policy Prices" do
       expect(page).to have_text("We were unable to calculate the travel insurance price due to")
 
       fill_in "Departure Date", with: "2018-04-01"
-      
+
       click_button "Get Travel Policy Price"
       
       expect(page).to have_text("Your Travel Insurance price is $60.")

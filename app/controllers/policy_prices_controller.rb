@@ -23,6 +23,6 @@ class PolicyPricesController < ApplicationController
 
   def form_params
     params.require(:policy_price_form).
-          permit(:date_of_birth, :length_of_trip)
+          permit(:date_of_birth, :departure_date, :return_date)
   end
 end
