@@ -5,7 +5,6 @@ class PolicyPricesController < ApplicationController
 
   def create
     @policy_price_form  = PolicyPriceForm.new(form_params)
-
     unless @policy_price_form.valid?
       render :new and return
     end
@@ -24,6 +23,6 @@ class PolicyPricesController < ApplicationController
 
   def form_params
     params.require(:policy_price_form).
-          permit(:age, :length_of_trip)
+          permit(:date_of_birth, :length_of_trip)
   end
 end

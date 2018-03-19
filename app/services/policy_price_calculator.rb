@@ -76,9 +76,6 @@ class PolicyPriceCalculator
     }
   ]
 
-  # please note, it was a conscious choice to name the parameters
-  # as it could be easy to confuse age with length of trip when using
-  # this method without them.
   def calculate_price(age:, length_of_trip:)
     applicable_entry = @@price_table.find { |entry|
        entry[:trip_length].find { |a| a == length_of_trip  } && 
