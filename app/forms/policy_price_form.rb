@@ -3,7 +3,9 @@ class PolicyPriceForm
 
   attr_accessor(
     :length_of_trip,
-    :date_of_birth
+    :date_of_birth,
+    :departure_date,
+    :return_date
   )
 
   # not happy with this, but it works
