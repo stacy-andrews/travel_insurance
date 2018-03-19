@@ -1,34 +1,47 @@
 require "rails_helper"
 
 describe PolicyPriceForm do
-  xit "is not valid when the age is a number less than 18" do
-    form = PolicyPriceForm.new(age: -4)
-    expect(form).to_not be_valid
+  it "is valid when the users age is between 18 and 69" do
+    travel_to(Time.zone.local(2018, 3, 19)) do
+      (18..69).each do |age| 
+        form = PolicyPriceForm.new(date_of_birth: (age.years.ago + 1.day).to_s)
+        form.valid?
 
-    expect(form.errors[:age].size).to be(1)
-  end
-
-  xit "is not valid when the age is not a number" do
-    form = PolicyPriceForm.new(age: 'a')
-    expect(form).to_not be_valid
-
-    expect(form.errors[:age].size).to be(1)
-  end
-
-  xit "is not valid when the age is not entered" do
-    form = PolicyPriceForm.new(age: nil)
-    expect(form).to_not be_valid
-    
-    expect(form.errors[:age].size).to be(2)
-  end
-
-  xit "is valid when the age is a whole number 18 or more and less than 100" do
-    (18..69).each do |age|
-      form = PolicyPriceForm.new(age: age.to_s)
-      form.valid?
-
-      expect(form.errors[:age].size).to be(0)
+        expect(form.errors[:age].size).to be(0)
+      end
     end
+  end
+
+  it "is not valid when the users age is less than 18" do
+    (1..17).each do |age|
+      form = PolicyPriceForm.new(date_of_birth: age.years.ago.to_s)
+      expect(form).to_not be_valid
+
+      expect(form.errors[:date_of_birth].size).to be(1)
+    end
+  end
+
+  it "is not valid when the users age is more than 69" do
+    (70..100).each do |age|
+      form = PolicyPriceForm.new(date_of_birth: age.years.ago.to_s)
+      expect(form).to_not be_valid
+
+      expect(form.errors[:date_of_birth].size).to be(1)
+    end
+  end
+
+  it "is not valid when the date of birth is not a valid iso date" do
+    form = PolicyPriceForm.new(date_of_birth: 'a')
+    expect(form).to_not be_valid
+
+    expect(form.errors[:date_of_birth].size).to be(1)
+  end
+
+  it "is not valid when the date of birth is missing" do
+    form = PolicyPriceForm.new(date_of_birth: nil)
+    expect(form).to_not be_valid
+
+    expect(form.errors[:date_of_birth].size).to be(1)
   end
 
   it "is not valid when the length of trip is not a number" do
