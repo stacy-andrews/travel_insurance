@@ -15,20 +15,17 @@ class PolicyPriceForm
 
   validates :departure_date, presence: true
   validate :departure_date_must_be_a_valid_date
+  validate :departure_date_must_be_today_or_in_the_future
 
-  # validates :length_of_trip,
-  #           presence: true,
-  #           numericality: { 
-  #             only_integer: true,
-  #             greater_than: PolicyPriceCalculator.minimum_trip_length - 1,
-  #             less_than:    PolicyPriceCalculator.maximum_trip_length + 1
-  #           }
+  validates :return_date, presence: true
+  validate :return_date_must_be_a_valid_date
+
+  validate :return_date_must_be_after_the_start_date
 
   def to_h
-    byebug
     {
       age:            age,
-      length_of_trip: (parsed_return_date - parsed_departure_date) + 1
+      length_of_trip: length_of_trip
     }
   end
 
@@ -46,14 +43,6 @@ class PolicyPriceForm
 
   def parsed_date
     DateTime.parse date_of_birth rescue nil
-  end
-
-  def parsed_departure_date
-    DateTime.parse departure_date rescue nil
-  end
-
-  def parsed_return_date
-    DateTime.parse return_date rescue nil
   end
 
   def age_must_be_greater_than_minimum_insurable_range
@@ -74,9 +63,41 @@ class PolicyPriceForm
     end
   end
 
+  def length_of_trip
+    (parsed_return_date - parsed_departure_date) + 1
+  end
+
+  def parsed_departure_date
+    DateTime.parse departure_date rescue nil
+  end
+
+  def parsed_return_date
+    DateTime.parse return_date rescue nil
+  end
+
   def departure_date_must_be_a_valid_date
     if departure_date.present? && !parsed_departure_date.present?
       errors.add(:departure_date, "Must be a valid date")
+    end
+  end
+
+  def return_date_must_be_a_valid_date
+    if return_date.present? && !parsed_return_date.present?
+      errors.add(:return_date, "Must be a valid date")
+    end
+  end
+
+  def return_date_must_be_after_the_start_date
+    if parsed_return_date.present? &&
+       parsed_departure_date.present? &&
+       parsed_return_date < parsed_departure_date
+       errors.add(:base, "Departure Date must be before the Return Date")
+    end
+  end
+
+  def departure_date_must_be_today_or_in_the_future
+    if parsed_departure_date.present? && parsed_departure_date < Date.today
+      errors.add(:departure_date, "Departure Date must be today or in the future")
     end
   end
 end

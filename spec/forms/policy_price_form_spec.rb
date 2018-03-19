@@ -44,24 +44,69 @@ describe PolicyPriceForm do
     expect(form.errors[:date_of_birth].size).to be(1)
   end
 
-  xit "is not valid when the length of trip is not a number" do
-    form = PolicyPriceForm.new(length_of_trip: 'a')
+  it "is not valid when the departure date is not a date" do
+    form = PolicyPriceForm.new(departure_date: 'a')
     expect(form).to_not be_valid
 
-    expect(form.errors[:length_of_trip].size).to be(1)
+    expect(form.errors[:departure_date].size).to be(1)
   end
 
-  xit "is not valid when the length of trip is not whole" do
-    form = PolicyPriceForm.new(length_of_trip: '1.5')
+  it "is not valid when the departure date is missing" do
+    form = PolicyPriceForm.new(departure_date: nil)
     expect(form).to_not be_valid
 
-    expect(form.errors[:length_of_trip].size).to be(1)
+    expect(form.errors[:departure_date].size).to be(1)
   end
 
-  xit "is valid when the length of trip is a whole number greater than 0" do
-    form = PolicyPriceForm.new(length_of_trip: '25')
-    form.valid?
+  it "is not valid when the return date is not a date" do
+    form = PolicyPriceForm.new(return_date: 'a')
+    expect(form).to_not be_valid
 
-    expect(form.errors[:length_of_trip].size).to be(0)
+    expect(form.errors[:return_date].size).to be(1)
+  end
+
+  it "is not valid when the return date is missing" do
+    form = PolicyPriceForm.new(return_date: nil)
+    expect(form).to_not be_valid
+
+    expect(form.errors[:return_date].size).to be(1)
+  end
+
+  it "is not valid when the departure date occurs after the return date" do
+    travel_to(Time.zone.local(2018, 3, 19)) do
+      form = PolicyPriceForm.new(return_date: '2018-03-19', departure_date: '2018-04-19')
+      expect(form).to_not be_valid
+
+      expect(form.errors[:base].size).to be(1)
+    end
+  end
+
+  it "is not valid when the departure date occurs before the current date" do
+    travel_to(Time.zone.local(2018, 3, 19)) do
+      form = PolicyPriceForm.new(departure_date: '2018-02-19')
+      expect(form).to_not be_valid
+
+      expect(form.errors[:departure_date].size).to be(1)
+    end
+  end
+
+  it 'is valid when the departure date occurs today or in the future' do
+    travel_to(Time.zone.local(2018, 3, 19)) do
+      form = PolicyPriceForm.new(departure_date: '2018-03-19')
+      form.valid?
+
+      expect(form.errors[:departure_date].size).to be(0)
+    end
+  end
+
+  it 'is valid when return date is the same as the departure date, it is classed as 1 days travel (an assumption)' do
+    travel_to(Time.zone.local(2018, 3, 19)) do
+      form = PolicyPriceForm.new(departure_date: '2018-03-19', return_date: '2018-03-19')
+      form.valid?
+
+      expect(form.errors[:departure_date].size).to be(0)
+      expect(form.errors[:return_date].size).to be(0)
+      expect(form.errors[:base].size).to be(0)
+    end
   end
 end
