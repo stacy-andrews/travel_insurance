@@ -74,7 +74,7 @@ describe PolicyPriceForm do
 
   it 'is valid when the departure date occurs today or in the future' do
     travel_to(Time.zone.local(2018, 3, 19)) do
-      is_not_valid(departure_date: '2018-03-19')
+      is_valid(departure_date: '2018-03-19')
     end
   end
 
