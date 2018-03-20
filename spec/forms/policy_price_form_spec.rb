@@ -4,10 +4,10 @@ describe PolicyPriceForm do
   it "is valid when the users age is between 18 and 69" do
     travel_to(Time.zone.local(2018, 3, 19)) do
       (18..69).each do |age| 
-        form = PolicyPriceForm.new(date_of_birth: (age.years.ago + 1.day).to_s)
+        form = PolicyPriceForm.new(date_of_birth: (age.years.ago).to_s)
         form.valid?
 
-        expect(form.errors[:age].size).to be(0)
+        expect(form.errors[:date_of_birth].size).to be(0)
       end
     end
   end
